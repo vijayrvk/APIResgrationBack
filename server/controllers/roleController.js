@@ -37,8 +37,7 @@ exports.getRoleCondition = function (req, res) {
 
 exports.getAllRole = function (req, res) {
     Role.find({
-        createdBy: req.query.userId,
-        tenantId: req.query.tenantId
+        createdBy: req.query.userId
     }, function (err, allRole) {
         if (!err) {
             res.send({
