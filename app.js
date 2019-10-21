@@ -46,7 +46,7 @@ app.use(express.urlencoded({
   extended: false
 }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, '/public')));
+app.use(express.static(path.join(__dirname, '/public/dist/apiRegistrationFront')));
 
 app.use('/auth', auth);
 app.use('/roles', roles);
@@ -101,7 +101,6 @@ app.use(function (err, req, res, next) {
   }
 
 });
-
 
 
 function capitalizeFirstLetter(string) {
