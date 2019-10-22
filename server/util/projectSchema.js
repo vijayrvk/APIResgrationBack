@@ -3,7 +3,10 @@ const Joi = require('joi');
 const createProjectSchema = Joi.object({
     name: Joi.string().required(),
     description: Joi.string(),
-    apiRequest: Joi.array(),
+    startDate: Joi.object(),
+    endDate: Joi.object(),
+    billable: Joi.boolean(),
+    estimatedDays: Joi.number(),
     isActive: Joi.boolean(),
     createdBy: Joi.string(),
     createdAt: Joi.date().timestamp(),
@@ -15,7 +18,10 @@ const createProjectSchema = Joi.object({
 const updateProjectSchema = Joi.object({
     name: Joi.string().required(),
     description: Joi.string(),
-    apiRequest: Joi.array(),
+    startDate: Joi.object().allow(null, ''),
+    endDate: Joi.object().allow(null, ''),
+    billable: Joi.boolean(),
+    estimatedDays: Joi.number(),
     isActive: Joi.boolean(),
     createdAt: Joi.date().timestamp(),
     updatedBy: Joi.string(),

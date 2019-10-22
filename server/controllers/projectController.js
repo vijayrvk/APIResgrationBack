@@ -3,29 +3,23 @@ const axios = require('axios');
 const _ = require('lodash')
 const Project = require('../models/project');
 const UpdateLog = require('../util/updateLog');
+const moment = require('moment')
 
 
 exports.createProject = function (req, res) {
     req.body.createdAt = new Date();
-    let url = req.body.apiRequest[0].url;
-    let a = url.split('/')
-    console.log(url.split('/'))
-    req.body.baseURL = '';
-    req.body.baseURL = req.body.baseURL.concat(a[0], '//', a[2]);
-    console.log(req.body.baseURL)
     Project.find().or(
         [{
-            name: new RegExp('^' + req.body.name + '$', "i"),
-            baseURL: new RegExp('^' + req.body.baseURL + '$', "i")
-        }]).then(function (project) {
+            name: new RegExp('^' + req.body.name + '$', "i")
+        }]).then((project) => {
         console.log(project)
         if (project.length > 0) {
             res.send({
                 success: false,
-                message: "Project or API are already exists"
+                message: "Project are already exists"
             })
         } else {
-            Project.create(req.body, function (err, newProject) {
+            Project.create(req.body, (err, newProject) => {
                 console.log(err)
                 if (!err) {
                     res.send({
@@ -60,21 +54,23 @@ exports.getAllProject = function (req, res) {
 }
 
 exports.getProjectCondition = function (req, res) {
-    console.log(req.body)
-    Project.find(req.body, function (err, allProjects) {
-        console.log(allProjects)
+    Project.find(req.body.filter).limit(req.body.limit)
+    .skip(req.body.limit * req.body.offset).exec((err, allProjects) => {
         if (!err) {
-            res.send({
-                success: true,
-                data: allProjects
-            });
-        } else {
-            res.send({
-                success: false,
-                message: "Something went wrong. Please try after sometime"
-            })
-        }
-    });
+            Project.count({}, (err, count) =>{
+                res.send({
+                    success: true,
+                    data: allProjects,
+                    count: count
+                });
+            });              
+            } else {
+                res.send({
+                    success: false,
+                    message: "Something went wrong. Please try after sometime"
+                })
+            }
+    })
 }
 
 exports.getProjectById = function (req, res) {

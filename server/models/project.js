@@ -14,8 +14,20 @@ var ProjectSchema = new Schema({
         type: Boolean,
         default: true
     },
-    apiRequest: {
-        type: Array,
+    startDate: {
+        type: Object,
+        required: true
+    },
+    endDate: {
+        type: Object,
+        required: true
+    },
+    billable: {
+        type: Boolean,
+        required: true
+    },
+    estimatedDays: {
+        type: Number,
         required: true
     },
     createdBy: {
